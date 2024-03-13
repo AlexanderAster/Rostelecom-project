@@ -10,6 +10,9 @@ def driver(): # отработает в начале каждого теста
    driver.get('https://start.rt.ru/')
    yield driver
    driver.quit()
+@pytest.fixture(scope='function') # фикстура для каждого теста
+def close(): # метод закрытия активного окна. 
+   driver.close()
 
 def test_auth_code(driver):
    '''Тест-кейс TRT-034. Позитивный сценарий авторизации через метод Авторизация по коду'''
@@ -22,3 +25,4 @@ def test_auth_code(driver):
       assert driver.find_element(*AuthCodeLocators.HEADER_REDIRECT)
    elif driver.find_element(*RegisterLocators.HEADER_HOME): # Иногда осуществляется переход в личный кабинет
       assert driver.find_element(*RegisterLocators.HEADER_HOME)
+   close
